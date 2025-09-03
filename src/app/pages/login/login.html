@@ -1,0 +1,36 @@
+<div class="container">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo6u7bYjYmowDSUL1KVGq0Cppb5fHNNOyl-A&s"
+        alt="Login Image" width="100%" height="400">
+    <div class="card container">
+        <div class="form-wrapper">
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="emailInput">Email address</label>
+                    <input type="email" class="form-control"
+                        [ngClass]="{'is-valid' : email?.valid, 'is-invalid' : email?.dirty && email?.invalid}"
+                        id="emailInput" placeholder="Enter email" formControlName="email" required>
+                </div>
+                @if (email?.dirty && email?.hasError('required')) {
+                <div class="error-message">Email is required</div>
+                }
+                @else if (email?.dirty && email?.invalid) {
+                <div class="error-message">Email not valid</div>
+                }
+                <div class="form-group">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" class="form-control" id="passwordInput" placeholder="Password"
+                        formControlName="password" required>
+                </div>
+                @if (password?.dirty && password?.hasError('required')) {
+                <div class="error-message">password is required</div>
+                }
+                @else if (password?.dirty && password?.invalid) {
+                <div class="error-message">password not valid</div>
+                }
+                <button type="submit" class="btn btn-primary btn-submit" [disabled]="!loginForm.valid">Submit</button>
+            </form>
+
+        </div>
+    </div>
+</div>
