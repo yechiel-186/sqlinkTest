@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="search">
+
+            </div>
+            <div class="row">
+                <div class="dedeline-precent col bold">
+                    Precents dedeline {{precentsDedlne}}
+                </div>
+                <div class="avarage col bold">
+                    Avarage: {{averageScore}}
+                </div>
+                <div class="search">
+                    <input type="text" class="form-control" placeholder="Search" (input)="search($event)">
+                </div>
+                <div> 
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" (click)="sortTable('name')">Name</th>
+                        <th scope="col" (click)="sortTable('score')">Score</th>
+                        <th scope="col" (click)="sortTable('durationInDays')">DurationInDays</th>
+                        <th scope="col" (click)="sortTable('bugsCount')">BugsCount</th>
+                        <th scope="col" (click)="sortTable('madeDadeline')">MadeDadeline</th>
+                    </tr>
+                </thead>
+                @if(displayArray) {<tbody>
+                    @for(p of displayArray; track p.id) {
+                    <tr [ngClass]="{'table-danger': p.score < 70, 'table-success' : p.score > 90}">
+                        <td>{{p.name}}</td>
+                        <td>{{p.score}}</td>
+                        <td>{{p.durationInDays}}</td>
+                        <td>{{p.bugsCount}}</td>
+                        <td>{{p.madeDadeline}}</td>
+                    </tr>}
+                </tbody>}
+            </table>
+        </div>
+    </div>
+</div>

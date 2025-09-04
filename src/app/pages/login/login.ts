@@ -2,6 +2,8 @@ import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Api, IloginDetails } from '../../services/api';
+import { Router } from '@angular/router';
+import { Data } from '../../services/data';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ export class Login implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[A-Z])(?=.*[0-9]).{8,}$")])
   });
 
-  constructor(private apiservice: Api) {
+  constructor(private apiservice: Api, private router: Router, private dataService: Data) {
   }
 
   ngOnInit() {
@@ -32,6 +34,20 @@ export class Login implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid)
-      this.apiservice.loginPost(this.loginForm.value as IloginDetails)
+      this.apiservice.loginPost(this.loginForm.value as IloginDetails).subscribe({
+        next: (res) => {
+          const tokenString = res[0]?.token;
+          const personalDetails = res[0]?.personalDetails;
+          if (tokenString) {
+            localStorage.setItem('token', tokenString);
+            localStorage.setItem('personDetails', JSON.stringify(personalDetails));
+            this.dataService.setPersonDetails(res[0].personalDetails);
+            this.router.navigateByUrl('info');
+          }
+        },
+        error: (err) => {
+          console.error("Login error:", err);
+        }
+      })
   }
 }
